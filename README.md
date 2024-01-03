@@ -1,0 +1,1 @@
+# Hau Sector Adapter Mock
