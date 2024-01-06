@@ -1,0 +1,159 @@
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Query {
+    myUser: UserObject!
+    myFlats: [FlatObject!]!
+    meterDatas(flatId: String!, type: MeterType!, start: String!, end: String!): [MeterDataObject!]!
+    currentMeterData(flatId: String!, type: MeterType!): MeterDataObject
+    paymentDatas(flatId: String!, paid: Boolean, start: String, end: String): [PaymentDataObject!]!
+    news(buildingId: String!): [NewsObject!]!
+    issues(buildingId: String!): [IssueObject!]!
+    votes(buildingId: String!): [VoteObject!]!
+    contacts(buildingId: String!): [ContactObject!]!
+    messages(buildingId: String!): [MessageObject!]!
+}
+
+type Mutation {
+    createCurrentMeterData(flatId: String!, payload: CreateMeterDataInput): MeterDataObject!
+    updateCurrentMeterData(flatId: String!, payload: UpdateMeterDataInput): MeterDataObject!
+    createIssue(buildingId: String!, payload: CreateIssueInput): IssueObject!
+    createMessage(buildingId: String!, payload: CreateMessageInput): MessageObject!
+}
+
+type UserObject {
+    id: ID!
+    firstName: String!
+    lastName: String!
+    middleName: String!
+    avatar: String!
+}
+
+type BuildingObject {
+    id: ID!
+    street: String!
+    house: String!
+}
+
+type FlatObject {
+    id: ID!
+    flat: Int!
+    buildingId: String!
+    building: BuildingObject!
+}
+
+type MeterDataObject {
+    id: ID!
+    value: Float!
+    accepted: Boolean!
+    enteredAt: String!
+    acceptedAt: String
+    updatedAt: String
+    userId: String!
+    flatId: String!
+    flat: FlatObject!
+    type: MeterType!
+}
+
+type NewsObject {
+    id: ID!
+    title: String!
+    content: String!
+    image: String!
+    publishedAt: String!
+}
+
+type IssueObject {
+    id: ID!
+    title: String!
+    content: String!
+    status: IssueStatus!
+    createdAt: String!
+}
+
+type VoteObject {
+    id: ID!
+    title: String!
+    content: String!
+    status: VoteStatus!
+    publishedAt: String!
+    answer: VoteAnswer
+}
+
+type ContactObject {
+    id: ID!
+    name: String!
+    surname: String!
+    avatar: String!
+    online: Boolean!
+    flat: Int!
+}
+
+type MessageObject {
+    id: ID!
+    text: String!
+    mine: Boolean!
+    time: String!
+    sender: ContactObject!
+}
+
+enum VoteAnswer {
+    AGREE
+    DISAGREE
+    AVOID
+}
+
+enum VoteStatus {
+    NEW
+    COMPLETED
+}
+
+type VoteResultObject {
+    id: ID!
+    agree: String
+    disagree: String
+    avoid: String
+}
+
+type PaymentDataObject {
+    id: ID!
+    value: Int!
+    paid: Boolean!
+    paidAt: String!
+    userId: String!
+    flatId: String!
+    flat: FlatObject!
+}
+
+enum MeterType {
+    ENERGY
+    WATER
+    GAS
+}
+
+enum IssueStatus {
+    DONE
+    PROGRESS
+    SENT
+}
+
+input CreateMeterDataInput {
+    value: Float!
+    type: MeterType!
+}
+
+input UpdateMeterDataInput {
+    value: Float!
+    type: MeterType!
+}
+
+input CreateIssueInput {
+    title: String!
+    content: String!
+}
+
+input CreateMessageInput {
+    text: String!
+}
