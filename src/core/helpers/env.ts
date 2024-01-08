@@ -53,6 +53,6 @@ export class Env {
   @IsUrl()
   AUTH0_ISSUER: string;
 
-  @IsUrl()
+  @IsString()
   AUTH0_AUDIENCE: string;
 }
