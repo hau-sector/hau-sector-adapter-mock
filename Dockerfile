@@ -1,4 +1,4 @@
-FROM node:18-alpine as serve-stage
+FROM node:20-alpine as serve-stage
 
 ENV NODE_ENV production
 
@@ -9,4 +9,4 @@ COPY ./dist ./dist
 
 EXPOSE 8888
 
-CMD ["node", "dist/src/main.js"]
+CMD ["node", "dist/main.js"]
