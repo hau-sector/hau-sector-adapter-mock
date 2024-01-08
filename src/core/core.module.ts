@@ -9,6 +9,7 @@ import { LoggingExceptionFilter } from './filters/logging-exception.filter';
 import { lowercaseKeys } from '../shared/helpers/case';
 import { SystemController } from './controllers/system.controller';
 import { join } from 'path';
+import { NodeEnv } from './constants/node-env';
 
 @Module({
   imports: [
@@ -27,9 +28,10 @@ import { join } from 'path';
         playground: configService.get('DEBUG'),
         introspection: configService.get('DEBUG'),
         typePaths: ['schema.gql'],
-        definitions: {
-          path: join(process.cwd(), 'src/schema.ts'),
-        },
+        definitions:
+          configService.get('NODE_ENV') !== NodeEnv.PRODUCTION
+            ? { path: join(process.cwd(), 'src/schema.ts') }
+            : undefined,
         cache: 'bounded',
         csrfPrevention: true,
         fieldResolverEnhancers: ['guards'],
