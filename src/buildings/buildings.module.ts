@@ -5,5 +5,6 @@ import { FlatsService } from './services/flats.service';
 
 @Module({
   providers: [FlatsResolver, BuildingsService, FlatsService],
+  exports: [FlatsService],
 })
 export class BuildingsModule {}

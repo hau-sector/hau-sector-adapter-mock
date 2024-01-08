@@ -12,6 +12,22 @@ export class UsersService {
       lastName: faker.person.lastName(sex),
       middleName: faker.person.middleName(sex),
       avatar: faker.image.avatar(),
+      online: faker.datatype.boolean(),
     };
+  }
+
+  async getAll(buildingId: string): Promise<UserObject[]> {
+    return Array.from({ length: 20 }, () => {
+      const sex = faker.person.sexType();
+
+      return {
+        id: faker.database.mongodbObjectId(),
+        firstName: faker.person.firstName(sex),
+        lastName: faker.person.lastName(sex),
+        middleName: faker.person.middleName(sex),
+        avatar: faker.image.avatar(),
+        online: faker.datatype.boolean(),
+      };
+    });
   }
 }

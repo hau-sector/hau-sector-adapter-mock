@@ -4,8 +4,8 @@ import { unknownContextConvertor } from '../../shared/convertors/unknown-context
 import { GuardWithUnknownContext } from '../types/guard-with-unknown-context';
 
 @Injectable()
-export class OauthGuard
-  extends AuthGuard('oauth')
+export class Auth0Guard
+  extends AuthGuard('jwt')
   implements GuardWithUnknownContext
 {
   getRequest(context: ExecutionContext) {

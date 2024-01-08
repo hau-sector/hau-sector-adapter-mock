@@ -13,4 +13,12 @@ export class FlatsService {
       buildingId: faker.database.mongodbObjectId(),
     }));
   }
+
+  async getById(flatId: string): Promise<Omit<FlatObject, 'building'>[]> {
+    return Array.from({ length: 3 }, () => ({
+      id: faker.database.mongodbObjectId(),
+      flat: faker.number.int({ min: 1, max: 100 }),
+      buildingId: faker.database.mongodbObjectId(),
+    }));
+  }
 }

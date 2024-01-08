@@ -59,15 +59,16 @@ export interface IQuery {
     news(buildingId: string): NewsObject[] | Promise<NewsObject[]>;
     issues(buildingId: string): IssueObject[] | Promise<IssueObject[]>;
     votes(buildingId: string): VoteObject[] | Promise<VoteObject[]>;
-    contacts(buildingId: string): ContactObject[] | Promise<ContactObject[]>;
+    contacts(buildingId: string): UserObject[] | Promise<UserObject[]>;
     messages(buildingId: string): MessageObject[] | Promise<MessageObject[]>;
 }
 
 export interface IMutation {
-    createCurrentMeterData(flatId: string, payload?: Nullable<CreateMeterDataInput>): MeterDataObject | Promise<MeterDataObject>;
-    updateCurrentMeterData(flatId: string, payload?: Nullable<UpdateMeterDataInput>): MeterDataObject | Promise<MeterDataObject>;
-    createIssue(buildingId: string, payload?: Nullable<CreateIssueInput>): IssueObject | Promise<IssueObject>;
-    createMessage(buildingId: string, payload?: Nullable<CreateMessageInput>): MessageObject | Promise<MessageObject>;
+    createCurrentMeterData(flatId: string, payload: CreateMeterDataInput): MeterDataObject | Promise<MeterDataObject>;
+    updateCurrentMeterData(flatId: string, payload: UpdateMeterDataInput): MeterDataObject | Promise<MeterDataObject>;
+    createIssue(buildingId: string, payload: CreateIssueInput): IssueObject | Promise<IssueObject>;
+    createMessage(buildingId: string, payload: CreateMessageInput): MessageObject | Promise<MessageObject>;
+    setAnswer(voteId: string, answer: VoteAnswer): VoteObject | Promise<VoteObject>;
 }
 
 export interface UserObject {
@@ -76,6 +77,7 @@ export interface UserObject {
     lastName: string;
     middleName: string;
     avatar: string;
+    online: boolean;
 }
 
 export interface BuildingObject {
@@ -120,6 +122,13 @@ export interface IssueObject {
     createdAt: string;
 }
 
+export interface VoteResultObject {
+    voteId: string;
+    agree: number;
+    disagree: number;
+    avoid: number;
+}
+
 export interface VoteObject {
     id: string;
     title: string;
@@ -127,15 +136,7 @@ export interface VoteObject {
     status: VoteStatus;
     publishedAt: string;
     answer?: Nullable<VoteAnswer>;
-}
-
-export interface ContactObject {
-    id: string;
-    name: string;
-    surname: string;
-    avatar: string;
-    online: boolean;
-    flat: number;
+    result: VoteResultObject;
 }
 
 export interface MessageObject {
@@ -143,21 +144,15 @@ export interface MessageObject {
     text: string;
     mine: boolean;
     time: string;
-    sender: ContactObject;
-}
-
-export interface VoteResultObject {
-    id: string;
-    agree?: Nullable<string>;
-    disagree?: Nullable<string>;
-    avoid?: Nullable<string>;
+    senderId: string;
+    sender: UserObject;
 }
 
 export interface PaymentDataObject {
     id: string;
     value: number;
     paid: boolean;
-    paidAt: string;
+    paidAt?: Nullable<string>;
     userId: string;
     flatId: string;
     flat: FlatObject;

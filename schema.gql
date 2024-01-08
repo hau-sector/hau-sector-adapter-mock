@@ -12,15 +12,16 @@ type Query {
     news(buildingId: String!): [NewsObject!]!
     issues(buildingId: String!): [IssueObject!]!
     votes(buildingId: String!): [VoteObject!]!
-    contacts(buildingId: String!): [ContactObject!]!
+    contacts(buildingId: String!): [UserObject!]!
     messages(buildingId: String!): [MessageObject!]!
 }
 
 type Mutation {
-    createCurrentMeterData(flatId: String!, payload: CreateMeterDataInput): MeterDataObject!
-    updateCurrentMeterData(flatId: String!, payload: UpdateMeterDataInput): MeterDataObject!
-    createIssue(buildingId: String!, payload: CreateIssueInput): IssueObject!
-    createMessage(buildingId: String!, payload: CreateMessageInput): MessageObject!
+    createCurrentMeterData(flatId: String!, payload: CreateMeterDataInput!): MeterDataObject!
+    updateCurrentMeterData(flatId: String!, payload: UpdateMeterDataInput!): MeterDataObject!
+    createIssue(buildingId: String!, payload: CreateIssueInput!): IssueObject!
+    createMessage(buildingId: String!, payload: CreateMessageInput!): MessageObject!
+    setAnswer(voteId: String!, answer: VoteAnswer!): VoteObject!
 }
 
 type UserObject {
@@ -29,6 +30,7 @@ type UserObject {
     lastName: String!
     middleName: String!
     avatar: String!
+    online: Boolean!
 }
 
 type BuildingObject {
@@ -73,6 +75,13 @@ type IssueObject {
     createdAt: String!
 }
 
+type VoteResultObject {
+    voteId: ID!
+    agree: Int!
+    disagree: Int!
+    avoid: Int!
+}
+
 type VoteObject {
     id: ID!
     title: String!
@@ -80,15 +89,7 @@ type VoteObject {
     status: VoteStatus!
     publishedAt: String!
     answer: VoteAnswer
-}
-
-type ContactObject {
-    id: ID!
-    name: String!
-    surname: String!
-    avatar: String!
-    online: Boolean!
-    flat: Int!
+    result: VoteResultObject!
 }
 
 type MessageObject {
@@ -96,7 +97,8 @@ type MessageObject {
     text: String!
     mine: Boolean!
     time: String!
-    sender: ContactObject!
+    senderId: String!
+    sender: UserObject!
 }
 
 enum VoteAnswer {
@@ -110,18 +112,11 @@ enum VoteStatus {
     COMPLETED
 }
 
-type VoteResultObject {
-    id: ID!
-    agree: String
-    disagree: String
-    avoid: String
-}
-
 type PaymentDataObject {
     id: ID!
     value: Int!
     paid: Boolean!
-    paidAt: String!
+    paidAt: String
     userId: String!
     flatId: String!
     flat: FlatObject!
